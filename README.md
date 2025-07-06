@@ -55,6 +55,7 @@ It uses H2 database in file mode for offline persistence and supports creating, 
    
 
 Project Structure
+```
    blog/
    ├── src/
    │   └── main/
@@ -75,6 +76,7 @@ Project Structure
    │               ├── index.html
    │               └── edit.html
    └── pom.xml
+```
 
 Notes
 ・The application uses the H2 database in file mode, so data is persisted even after the app stops.
