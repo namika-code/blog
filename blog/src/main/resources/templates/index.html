@@ -1,0 +1,101 @@
+<!-- 20250704 add --> 
+<!-- 投稿フォームと投稿一覧を表示するHTML画面（Thymeleaf使用） -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>おためしブログ</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .section h2 {
+            border-bottom: 1px solid #aaa;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .post {
+            margin-bottom: 20px;
+        }
+
+        .post h3 {
+            margin: 0;
+            color: #333;
+        }
+
+        .post p {
+            margin: 5px 0;
+        }
+
+        .post small {
+            color: #777;
+        }
+
+        .post-form form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .post-form input,
+        .post-form textarea {
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 400px;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        .post-form button {
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>おためしブログ</h1>
+
+    <!-- 投稿一覧セクション -->
+    <div class="section">
+        <h2>投稿一覧</h2>
+
+        <div th:each="post : ${posts}" class="post">
+            <h3 th:text="${post.title}">タイトル</h3>
+            <p th:text="${post.content}">本文</p>
+            <small th:text="${post.createdAt}">投稿日</small>
+            <p>
+                <a th:href="@{'/edit/' + ${post.id}}">編集</a> |
+                <a th:href="@{'/delete/' + ${post.id}}" onclick="return confirm('本当に削除しますか？');">削除</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- 投稿フォームセクション -->
+    <div class="section post-form">
+        <h2>新しい投稿</h2>
+        <form action="/post" method="post">
+            <input type="text" name="title" placeholder="タイトル" required><br>
+            <textarea name="content" placeholder="本文" rows="5" required></textarea><br>
+            <button type="submit">投稿</button>
+        </form>
+    </div>
+</body>
+</html>

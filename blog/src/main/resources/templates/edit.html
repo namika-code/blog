@@ -1,0 +1,25 @@
+<!-- 20250704 add 編集画面　-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>投稿の編集</title>
+</head>
+<body>
+    <h1>投稿の編集</h1>
+    
+    <!-- 投稿内容の編集フォーム -->
+    <form th:action="@{'/edit/' + ${post.id}}" th:object="${post}" method="post">
+        <!-- タイトルの入力欄 -->
+        <p>タイトル: <input type="text" th:field="*{title}" /></p>
+        <!-- 内容の入力欄 -->
+        <p>内容: <textarea th:field="*{content}"></textarea></p>
+        <!-- 更新ボタン -->
+        <button type="submit">更新</button>
+    </form>
+    
+    <!-- 一覧に戻るリンク -->
+    <p><a href="/">戻る</a></p>
+</body>
+</html>
