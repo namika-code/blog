@@ -1,0 +1,60 @@
+<!-- 20250708 add	投稿者以外の投稿詳細ページ -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>投稿詳細</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f9f9f9;
+            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        .post-meta {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .post-content {
+            white-space: pre-wrap;
+            font-size: 1.1em;
+            line-height: 1.6;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .back-link a {
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1 th:text="${post.title}">投稿タイトル</h1>
+    <div class="post-meta">
+        投稿者：<span th:text="${post.user.username}">投稿者名</span> | 投稿日：<span th:text="${post.createdAt}">日時</span>
+    </div>
+    <div class="post-content" th:text="${post.content}">
+        投稿内容がここに入ります。
+    </div>
+
+    <div class="back-link">
+        <a th:href="@{/}">← 一覧に戻る</a>
+    </div>
+</body>
+</html>

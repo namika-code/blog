@@ -1,6 +1,3 @@
-<!-- 20250704 add --> 
-<!-- 投稿フォームと投稿一覧を表示するHTML画面（Thymeleaf使用） -->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -8,94 +5,244 @@
     <title>おためしブログ</title>
     <style>
         body {
-            font-family: sans-serif;
-            margin: 20px auto;
-            max-width: 800px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-        }
-
-        .section h2 {
-            border-bottom: 1px solid #aaa;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-        }
-
-        .post {
-            margin-bottom: 20px;
-        }
-
-        .post h3 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f9f9f9;
             margin: 0;
+            padding: 0 20px 40px;
             color: #333;
         }
-
-        .post p {
-            margin: 5px 0;
+        h1 {
+            text-align: center;
+            margin: 30px 0 10px;
+            color: #444;
         }
-
-        .post small {
-            color: #777;
+        .logout {
+            text-align: right;
+            margin-bottom: 20px;
         }
-
-        .post-form form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .post-form input,
-        .post-form textarea {
-            margin-bottom: 10px;
-            width: 100%;
-            max-width: 400px;
-            padding: 8px;
-            font-size: 14px;
-        }
-
-        .post-form button {
+        .logout form button {
+            background-color: #999999; /* 落ち着いたグレー */
+            color: white;
+            border: none;
             padding: 8px 16px;
-            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .logout form button:hover {
+            background-color: #777777;
+        }
+        .post-card {
+			background: white;
+			border-radius: 8px;
+			padding: 15px 20px;
+			margin-bottom: 20px;
+			box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+        }
+        .post-card h2 {
+            margin: 0 0 10px;
+            color: #1976d2;
+            word-break: break-word;
+        }
+        .post-card p {
+            margin: 0 0 10px;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .post-card small {
+            color: #888;
+            font-size: 0.85em;
+        }
+        .post-card .actions {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .post-card .actions a {
+            color: #1976d2;
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        .post-card .actions a:hover {
+            color: #0d47a1;
+            text-decoration: underline;
+        }
+
+        /* 投稿フォーム */
+        .post-form {
+            max-width: 700px;
+            margin: 40px auto 0;
+            background: white;
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+            box-sizing: border-box;
+        }
+        .post-form input[type="text"],
+        .post-form textarea {
+            width: 100%; /* 幅いっぱいに */
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+            resize: vertical;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        .post-form input[type="text"]:focus,
+        .post-form textarea:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+        }
+        .post-form button {
+            background-color: #4caf50; /* 緑色系 */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .post-form button:hover {
+            background-color: #388e3c;
+        }
+
+        /* ページネーション */
+        .pagination {
+            max-width: 500px;
+            margin: 30px auto 0;
+            text-align: center;
+        }
+        .pagination a, .pagination span {
+            display: inline-block;
+            margin: 0 5px;
+            padding: 8px 12px;
+            color: #1976d2;
+            border: 1px solid #1976d2;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .pagination a:hover {
+            background-color: #1976d2;
+            color: white;
+        }
+        .pagination .current {
+            background-color: #1976d2;
+            color: white;
+            cursor: default;
+            border-color: #1976d2;
         }
     </style>
 </head>
 <body>
     <h1>おためしブログ</h1>
 
-    <!-- 投稿一覧セクション -->
-    <div class="section">
-        <h2>投稿一覧</h2>
-
-        <div th:each="post : ${posts}" class="post">
-            <h3 th:text="${post.title}">タイトル</h3>
-            <p th:text="${post.content}">本文</p>
-            <small th:text="${post.createdAt}">投稿日</small>
-            <p>
-                <a th:href="@{'/edit/' + ${post.id}}">編集</a> |
-                <a th:href="@{'/delete/' + ${post.id}}" onclick="return confirm('本当に削除しますか？');">削除</a>
-            </p>
-        </div>
-    </div>
-
-    <!-- 投稿フォームセクション -->
-    <div class="section post-form">
-        <h2>新しい投稿</h2>
-        <form action="/post" method="post">
-            <input type="text" name="title" placeholder="タイトル" required><br>
-            <textarea name="content" placeholder="本文" rows="5" required></textarea><br>
-            <button type="submit">投稿</button>
+	<!-- ログアウト -->
+    <div class="logout">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">ログアウト</button>
         </form>
     </div>
+	<div sec:authorize="hasRole('ROLE_ADMIN')">
+	    <a href="/admin/users" style="color:#1976d2; font-weight:bold;">管理者ページへ</a>
+	</div>
+	
+	<!-- 新規投稿 -->
+	<div style="text-align: left; margin: 20px 0;">
+	    <a href="/post" style="
+	        display: inline-block;
+	        background-color: #1976d2;
+	        color: white;
+	        padding: 10px 20px;
+	        border-radius: 6px;
+	        text-decoration: none;
+	        font-weight: bold;
+	    ">＋ 新規投稿</a>
+	</div>
+
+    <!-- 投稿一覧 -->
+	<div th:each="post : ${posts}" class="post-card">
+		<h2 style="margin-bottom: 5px;">
+		    <a th:if="${post.user != null and post.user.username == currentUsername}"
+		       th:href="@{/posts/edit/{id}(id=${post.id})}"
+		       th:text="${post.title}">タイトル</a>
+
+		    <a th:unless="${post.user != null and post.user.username == currentUsername}"
+		       th:href="@{/posts/{id}(id=${post.id})}"
+		       th:text="${post.title}">タイトル</a>
+
+		    <span style="font-size: 0.9em; color: #666; margin-left: 15px;">
+		        （投稿者: <span th:text="${post.user != null ? post.user.username : '不明'}">投稿者名</span>）
+		    </span>
+		</h2>
+		<!--
+	    <p>
+	        <strong>投稿者：</strong> 
+	        <span th:text="${post.user != null ? post.user.username : '不明'}">投稿者名</span>
+	    </p>
+		-->
+	    <small th:text="${post.createdAt}">投稿日</small>
+	</div>
+
+	
+	
+	<!--
+    <div th:each="post : ${posts}" class="post-card">
+		<h2>
+		    <a th:if="${post.user.username == currentUsername}"
+		       th:href="@{/posts/edit/{id}(id=${post.id})}"
+		       th:text="${post.title}">タイトル</a>
+
+		    <a th:unless="${post.user.username == currentUsername}"
+		       th:href="@{/posts/{id}(id=${post.id})}"
+		       th:text="${post.title}">タイトル</a>
+		</h2>
+        <p th:text="${post.content}">本文</p>
+		<p>
+			<strong>投稿者：</strong> 
+			<span th:text="${post.user.username}">投稿者名</span>
+		</p>
+        <small th:text="${post.createdAt}">投稿日</small>
+
+        <div class="actions">
+            <a th:href="@{'/edit/' + ${post.id}}">編集</a>
+            <a th:href="@{'/delete/' + ${post.id}}"
+               onclick="return confirm('本当に削除しますか？');">削除</a>
+        </div>
+    </div>
+	-->
+	
+	
+    <!-- ページネーション -->
+    <div class="pagination" th:if="${totalPages > 1}">
+        <a th:each="i : ${#numbers.sequence(1, totalPages)}"
+           th:href="@{/(page=${i})}"
+           th:text="${i}"
+           th:classappend="${i == page} ? 'current' : ''">1</a>
+    </div>
+
+    <!-- 
+    <div class="post-form">
+		<form action="/post" method="post" th:object="${post}">
+		    <input type="text" name="title" placeholder="タイトル" required><br>
+		    <textarea name="content" placeholder="本文" rows="5" cols="30" required></textarea><br>
+		    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		    <button type="submit">投稿</button>
+		</form>
+    </div>
+	 -->
 </body>
 </html>

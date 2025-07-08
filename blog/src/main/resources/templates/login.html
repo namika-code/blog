@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>ログイン</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 320px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .login-container label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 10px;
+            color: red;
+        }
+
+        .logout-msg {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>ログイン</h2>
+        <form th:action="@{/login}" method="post">
+            <label>ユーザー名</label>
+            <input type="text" name="username" required />
+            
+            <label>パスワード</label>
+            <input type="password" name="password" required />
+            
+            <button type="submit">ログイン</button>
+        </form>
+
+        <div th:if="${param.error}" class="message">
+            ログイン失敗: ユーザー名またはパスワードが違います。
+        </div>
+        <div th:if="${param.logout}" class="message logout-msg">
+            ログアウトしました。
+        </div>
+		<div th:if="${param.registered}" class="message logout-msg">
+		    登録が完了しました。再度入力してログインしてください。
+		</div>
+		
+		<p>
+		  	アカウントをお持ちでない方は
+		    <a th:href="@{/register}">新規会員登録</a>
+		</p>
+    </div>
+</body>
+</html>

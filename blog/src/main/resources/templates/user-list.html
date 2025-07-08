@@ -1,0 +1,52 @@
+<!--
+	# 20250707 add
+	# 管理者画面
+-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>登録ユーザー一覧</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f9f9f9;
+        }
+        table {
+            width: 80%;
+            margin: 40px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 20px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #1976d2;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">登録済みユーザー一覧</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ユーザー名</th>
+                <th>パスワード（暗号化済）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}">1</td>
+                <td th:text="${user.username}">sampleuser</td>
+                <td th:text="${user.password}">****</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

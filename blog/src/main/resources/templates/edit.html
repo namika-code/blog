@@ -1,25 +1,104 @@
-<!-- 20250704 add 編集画面　-->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>投稿の編集</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: #444;
+        }
+        .edit-container {
+            max-width: 700px;
+            background: #fff;
+            padding: 30px 35px;
+            margin: 30px auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 5px rgba(25, 118, 210, 0.3);
+            outline: none;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #388e3c;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>投稿の編集</h1>
-    
-    <!-- 投稿内容の編集フォーム -->
-    <form th:action="@{'/edit/' + ${post.id}}" th:object="${post}" method="post">
-        <!-- タイトルの入力欄 -->
-        <p>タイトル: <input type="text" th:field="*{title}" /></p>
-        <!-- 内容の入力欄 -->
-        <p>内容: <textarea th:field="*{content}"></textarea></p>
-        <!-- 更新ボタン -->
-        <button type="submit">更新</button>
-    </form>
-    
-    <!-- 一覧に戻るリンク -->
-    <p><a href="/">戻る</a></p>
+
+    <div class="edit-container">
+        <form th:action="@{'/edit/' + ${post.id}}" th:object="${post}" method="post">
+            <label for="title">タイトル</label>
+            <input type="text" th:field="*{title}" id="title" required />
+
+            <label for="content">内容</label>
+            <textarea th:field="*{content}" id="content" rows="6" required></textarea>
+
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <button type="submit">更新</button>
+        </form>
+		<form th:action="@{'/delete/' + ${post.id}}" method="get" onsubmit="return confirm('本当に削除しますか？');" style="text-align: right; margin-top: 15px;">
+		    <button type="submit" style="background-color: #e53935; padding: 10px 12px; font-size: 0.9em; border-radius: 4px; width: auto;">
+		        削除する
+		    </button>
+		</form>
+    </div>
+
+    <div class="back-link">
+        <a href="/">← 一覧に戻る</a>
+    </div>
 </body>
 </html>

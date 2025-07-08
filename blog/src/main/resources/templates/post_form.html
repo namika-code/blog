@@ -1,0 +1,65 @@
+<!-- templates/post_form.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>投稿作成</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            padding: 30px;
+        }
+        .post-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .post-form h2 {
+            text-align: center;
+            color: #1976d2;
+        }
+        .post-form input[type="text"],
+        .post-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        .post-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .post-form button:hover {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="post-form">
+        <h2>新しい投稿</h2>
+        <form th:action="@{/posts}" th:object="${post}" method="post">
+			<input type="text" th:field="*{title}" placeholder="タイトル" required>
+			<textarea th:field="*{content}" placeholder="本文" rows="6" required></textarea>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit">投稿</button>
+        </form>
+    </div>
+	<div class="back-link">
+	    <a href="/">← 一覧に戻る</a>
+	</div>
+</body>
+</html>
