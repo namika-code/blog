@@ -1,145 +1,276 @@
-# blog
-A Java blog application using an offline database for storing posts and user data.
+# Sample Blog - Spring Boot Web  youBlog Application
 
-# Simple Blog Web Application - Spring Boot
 ## Overview
 
-This is a simple web blog application built with Java and Spring Boot.  
-It uses H2 database in file mode for offline persistence and supports creating, viewing, editing, and deleting posts.
+This is a simple web blog application built with Java (Spring Boot).  
+It uses an offline file-based H2 database and supports **creating, editing, deleting, and viewing blog posts**, along with **login functionality and user-specific access control**.
 
-## Features
+---
 
-- Create new blog posts  
-- Display a list of posts  
-- Edit existing posts  
-- Delete posts  
-- View and manage the database via H2 web console
+## ✅ Features
 
-## Technology Stack
+- Create new posts (authenticated users)
+- View post list and detailed post pages
+- Edit and delete posts (by the author only)
+- Admin can view all posts
+- Login, registration, and authentication via Spring Security
+- Role-based access control (user/admin)
+- View database content via H2 Console
 
-- Java 17  
-- Spring Boot  
-- Spring Web / Spring Data JPA  
-- Thymeleaf  
-- H2 Database (file mode)
+---
 
-## How to Run
+## 🛠️ Tech Stack
 
-1. Clone this repository:  
-   git clone https://github.com/your-username/blog.git
-   cd blog
+- Java 17+
+- Spring Boot 3.x
+- Spring Web / Spring Data JPA
+- Spring Security
+- Thymeleaf
+- H2 Database (file-based mode)
 
-2. Verify that Java 17 or above is installed:
-   java -version
+---
 
-3. Start the Spring Boot application:
-   ・In Eclipse: Right-click MyblogApplication.java → Run As → Spring Boot App
-   ・Or via terminal:
-   ./mvnw spring-boot:run
+## 🚀 Getting Started
 
-4. Open your web browser and visit:
-   http://localhost:8080/
+### 1. Clone the project
 
-5. (Optional) Access the H2 database console:
-   http://localhost:8080/h2-console
-   ・JDBC URL: jdbc:h2:file:./data/blogdb
-   ・Username: sa
-   ・Password: (leave blank)
-
-## Run with `.jar` file (via GitHub Releases)
-
-1. Download the `.jar` file from the [Releases](https://github.com/your-username/blog/releases) page
-2. Open Command Prompt or Terminal in the folder where the `.jar` file is located
-3. Run the following command:java -jar blog-0.0.1-SNAPSHOT.jar
-4. You can check it in 4.5. just like when you clone the project.
-   
-
-Project Structure
+```bash
+git clone https://github.com/your-username/blog.git
+cd blog
 ```
+
+### 2. Make sure Java 17 or later is installed
+
+```bash
+java -version
+```
+
+### 3. Run the Spring Boot application
+
+#### Using Maven (from terminal)
+
+```bash
+./mvnw spring-boot:run
+```
+
+#### Or using an IDE (Eclipse / IntelliJ)
+
+Right-click on `MyblogApplication.java` → Run As → Spring Boot App
+
+### 4. Open the web application in your browser
+
+```
+http://localhost:8080/
+```
+---
+
+## 🧪 H2 Console (for development/testing)
+
+- URL: `http://localhost:8080/h2-console`
+- JDBC URL: `jdbc:h2:file:./data/blogdb`
+- Username: `sa`
+- Password: *(leave blank)*
+
+*Note: When using the H2 console, please click "Disconnect" after you're done to avoid database lock issues when accessing from multiple processes.*
+
+---
+
+## 🔐 Login Credentials
+
+### Admin Account
+
+- Username: `admin`  
+- Password: `adminpass`  
+
+### Regular Users
+
+Can register via the sign-up page on the login screen.
+
+---
+
+## 🗂️ Page Routes
+
+| Path             | Description                                     |
+|------------------|-------------------------------------------------|
+| `/`              | Post list                                       |
+| `/post/new`      | New post creation page (login required)         |
+| `/post/{id}`     | Post detail page (other users or admin only)         |
+| `/edit/{id}`     | Edit post page (author only)                    |
+| `/login`         | Login page                                      |
+| `/signup`        | User registration page                          |
+
+---
+
+## 📁 Project Structure
+
+```
+Project Structure
    blog/
    ├── src/
    │   └── main/
    │       ├── java/
    │       │   └── com/
    │       │       └── example/
-   │       │           └── blog/
-   │       │               ├── MyblogApplication.java
+   │       │           └── demo/
+   │       │               ├── BlogApplication.java
+   │       │               ├── config/
+   │       │               │   └── SecurityConfig.java
+   │       │               │   └── UserDataInitializer.java
    │       │               ├── controller/
    │       │               │   └── BlogController.java
+   │       │               │   └── LoginController.java
+   │       │               │   └── UserController.java
    │       │               ├── entity/
    │       │               │   └── Post.java
-   │       │               └── repository/
-   │       │                   └── PostRepository.java
+   │       │               │   └── User.java
+   │       │               ├── repository/
+   │       │               │   └── PostRepository.java
+   │       │               │   └── UserRepository.java
+   │       │               └── service/
+   │       │                   └── CustomUserDetailsService.java
    │       └── resources/
    │           ├── application.properties
    │           └── templates/
+   │               ├── edit.html
    │               ├── index.html
-   │               └── edit.html
+   │               ├── login.html
+   │               ├── post_form.html
+   │               ├── post-detail.html
+   │               ├── register.html
+   │               └── user-list.html
    └── pom.xml
+
 ```
 
-Notes
-・The application uses the H2 database in file mode, so data is persisted even after the app stops.
-・Avoid accessing the database concurrently from multiple processes, as it may cause errors.
-・When using the H2 console, make sure to disconnect before restarting the app to prevent database locking issues.
+---
+
+## 📦 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## ⚠️ Notes
+
+- This app uses an offline H2 database in file-based mode, so data is persisted even after shutdown.
+- Avoid accessing the database simultaneously from multiple processes, as it may cause locking issues.
+
+
+
 
 
 # おためしブログ - Spring Boot Web ブログアプリ
+
 ## 概要
 
 このアプリは、Java（Spring Boot）を使用して作成したシンプルなWebブログアプリケーションです。  
-H2のオフラインファイルDBを使用し、投稿の作成・一覧表示・編集・削除が可能です。
+H2のオフラインファイルDBを使用し、**投稿の作成・編集・削除・閲覧**に加え、**ログイン機能とユーザーごとのアクセス制御**が含まれています。
 
-## 主な機能
+---
 
-- 投稿の新規作成
-- 投稿の一覧表示
-- 投稿の編集機能
-- 投稿の削除機能
+## ✅ 主な機能
+
+- 投稿の新規作成（ログインユーザー）
+- 投稿の一覧表示・詳細ページ
+- 投稿の編集・削除（投稿者のみ）
+- 管理者（admin）による全投稿の閲覧
+- Spring Security によるログイン・新規登録・認証
+- ユーザー別アクセス制限
 - H2コンソールによるDB内容の確認
 
-## 技術スタック
+---
 
-- Java 17
-- Spring Boot
+## 🛠️ 技術スタック
+
+- Java 17 以上
+- Spring Boot 3.x
 - Spring Web / Spring Data JPA
+- Spring Security
 - Thymeleaf
 - H2 Database（ファイルモード）
 
-## 実行方法
+---
 
-1. このプロジェクトをクローン
-   git clone https://github.com/あなたのユーザー名/blog.git
-   cd blog
+## 🚀 実行方法（セットアップ手順）
 
-2. Java 17以上がインストールされていることを確認
-   java -version
+### 1. このプロジェクトをクローン
 
-3. Spring Boot アプリケーションを起動
-   Eclipse なら MyblogApplication.java を右クリック → Run As → Spring Boot App
-   またはターミナルで以下を実行
-   ./mvnw spring-boot:run
+```bash
+git clone https://github.com/あなたのユーザー名/blog.git
+cd blog
+```
 
-4. Webアプリをブラウザで確認
-   http://localhost:8080/
+### 2. Java 17以上がインストールされていることを確認
 
-5. H2コンソールでデータベースを確認（オプション）
-   http://localhost:8080/h2-console
-   JDBC URL: jdbc:h2:file:./data/blogdb
-   ユーザー名: sa
-   パスワード: 空欄のまま
+```bash
+java -version
+```
+
+### 3. Spring Boot アプリケーションを起動
+
+#### Mavenの場合（ターミナルから）
+
+```bash
+./mvnw spring-boot:run
+```
+
+#### または IDE（Eclipse / IntelliJ）を使用する場合
+
+`MyblogApplication.java` を右クリック → Run As → Spring Boot App
+
+### 4. ブラウザでWebアプリを確認
+
+```
+http://localhost:8080/
+```
 
 ---
-## `.jar` ファイルからの実行方法（Releases使用）
 
-1. [Releases](https://github.com/あなたのユーザー名/blog/releases) ページから `.jar` ファイルをダウンロード
-2. `.jar` ファイルを配置したフォルダでコマンドプロンプトを開く
-3. 以下のコマンドを実行：java -jar blog-0.0.1-SNAPSHOT.jar
-4. プロジェクトをクローンした場合と同様で4.5.で確認できる
+## 🧪 H2コンソール（DB確認用）
+
+- URL: `http://localhost:8080/h2-console`
+- JDBC URL: `jdbc:h2:file:./data/blogdb`
+- ユーザー名: `sa`
+- パスワード: （空欄）
+
+※ 開発用。H2コンソール使用後は「Disconnect」ボタンで切断してください。複数プロセスで同時アクセスするとエラーになる場合があります。
+
+---
+
+## 🔐 ログイン情報
+
+### 管理者アカウント
+
+- ユーザー名: `admin`  
+- パスワード: `adminpass`  
+
+### 一般ユーザー
+
+ログイン画面にて新規会員登録
 
 
-注意事項
-・オフラインDB（H2ファイルモード）を使用しているため、アプリを終了してもデータは保持されます。
-・複数プロセスで同時にDBへアクセスするとエラーになることがあります。H2コンソール使用後は「Disconnect」ボタンを押してください。
+---
 
+## 🗂️ 画面構成（ルーティング）
 
+| パス             | 内容                         |
+|------------------|------------------------------|
+| `/`              | 投稿一覧                     |
+| `/post/new`      | 新規投稿ページ（ログイン必須） |
+| `/post/{id}`     | 投稿詳細ページ（他ユーザーまたは管理者） |
+| `/edit/{id}`     | 投稿編集ページ（投稿者のみ） |
+| `/login`         | ログインページ               |
+| `/signup`        | 新規登録ページ               |
+
+---
+
+## 📦 ライセンス
+
+このプロジェクトは [MIT License](LICENSE) のもとで公開されています。
+
+---
+
+## ⚠️ 注意事項
+
+- オフラインDB（H2ファイルモード）を使用しているため、アプリを終了してもデータは保持されます。
+- H2コンソールの同時使用やIDEからの多重実行でDBロックが発生することがあります。
