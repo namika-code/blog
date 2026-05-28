@@ -101,10 +101,10 @@ Can register via the sign-up page on the login screen.
 
 ---
 
-## 📁 Project Structure
+## 📁 File Structure
 
 ```
-Project Structure
+File Structure
    blog/
    ├── src/
    │   └── main/
